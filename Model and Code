@@ -1,0 +1,63 @@
+/*********************************************
+ * OPL 12.5 Model
+ * Author: user
+ * Creation Date: Mar 22, 2023 at 4:03:57 PM
+ * Description: This model represents a Travelling Salesman Problem (TSP) formulation 
+ * using a Miller-Tucker-Zemlin constraint to prevent subtours. 
+ *********************************************/
+
+// PARAMETERS
+
+// Number of stops (nodes) in the problem
+int n = 17;
+
+// Index range for stops (nodes)
+range nodes = 1 .. n;
+
+// Cost matrix representing the cost between nodes i and j
+int Cost[nodes][nodes] = ...;
+
+// DECISION VARIABLES
+
+// x[i][j] is 1 if the path goes from node i to node j; 0 otherwise
+dvar boolean x[nodes][nodes];
+
+// u[i] is a rank variable that helps in avoiding subtours
+dvar float+ u[nodes];
+
+// OBJECTIVE
+
+// Minimize the total cost of traveling between the nodes
+minimize sum (i, j in nodes) x[i][j] * Cost[i][j];
+
+// CONSTRAINTS
+
+subject to {
+
+    // Ensure no node has a path to itself
+    forall (i in nodes) x[i][i] == 0;
+
+    // Each node must have exactly one outgoing edge
+    rule_one_out:
+    forall (i in nodes) sum (j in nodes) x[i][j] == 1;
+
+    // Each node must have exactly one incoming edge
+    rule_one_in:
+    forall (j in nodes) sum (i in nodes) x[i][j] == 1;
+
+    // Miller-Tucker-Zemlin constraint to prevent subtours
+    rule_no_subtour:
+    forall (i, j in nodes : j != 1) u[i] + x[i][j] <= u[j] + (n - 1) * (1 - x[i][j]);
+
+    // Set rank of the first node to 0 (base condition)
+    u[1] == 0;
+}
+
+// POST-PROCESSING
+
+// Display the optimal path determined by the solver
+execute POSTPROCESS {
+    for (var i in nodes)
+        for (var j in nodes)
+            if (x[i][j] > 0) write(i, " -> ", j, "\n");   
+}
