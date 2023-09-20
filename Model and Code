@@ -1,7 +1,5 @@
 /*********************************************
  * OPL 12.5 Model
- * Author: user
- * Creation Date: Mar 22, 2023 at 4:03:57 PM
  * Description: This model represents a Travelling Salesman Problem (TSP) formulation 
  * using a Miller-Tucker-Zemlin constraint to prevent subtours. 
  *********************************************/
