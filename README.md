@@ -13,6 +13,8 @@ Given a list of 20 cities, each with its unique location, and the pairwise dista
 3. The salesman returns to the original starting city after visiting all the others.
 
 **Calculation**
+
+
 ![image](https://github.com/adityasarkar123/Travelling-Salesman-Problem-TSP-Solution-with-IBM-Cplex-Solve/assets/112374443/c32c5734-8916-46dd-9994-8ab8943886a1)
 
 #### Importance of the Problem
